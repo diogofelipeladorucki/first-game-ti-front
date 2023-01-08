@@ -2,20 +2,35 @@
   <q-page class="flex flex-center">
     <div class="container">
       <div>
+        <pre>
+        <!-- {{floor}} -->
+
+        </pre>
         <div class="generalFloor">
-          <div class="floor d-flex justify-content-center align-items-center" style="background-color: #ccc;">
-              <div class="player" id="triangulo-para-direita"></div>
+          <div v-for="(row, index) in floor" :key="index">
+            <div v-for="(col, i) in row" :key="i+'i'">
+              <div class="floor" style="background-color: #ccc;">
+                <!-- {{col.here}} -->
+                <div v-if="col.here" class="player" :id="getDirection"></div>
+              </div>
+            </div>
           </div>
+          
+          <!-- <div v-for="(row, index) in floor" :key="index">
+            <div v-for="(c, i) in row" :key="i+'index'" class="floor d-flex justify-content-center align-items-center" style="background-color: #ccc">
+              {{c}}
+              <div class="floor" style="background-color: #ccc;"></div>
+            </div>
+          </div> -->
+          <!-- <div class="floor" style="background-color: #ccc;"></div>
           <div class="floor" style="background-color: #ccc;"></div>
           <div class="floor" style="background-color: #ccc;"></div>
           <div class="floor" style="background-color: #ccc;"></div>
           <div class="floor" style="background-color: #ccc;"></div>
           <div class="floor" style="background-color: #ccc;"></div>
-          <div class="floor" style="background-color: #ccc;"></div>
-          <div class="floor" style="background-color: #ccc;"></div>
-          <div class="floor" style="background-color: #ccc;"></div>
+          <div class="floor" style="background-color: #ccc;"></div> -->
           <div class="commands">
-              <input type="text" class="inputComand" placeholder="Digite um comando!">
+              <input v-model="command" type="text" class="inputComand" placeholder="Digite um comando!" @keypress="setCommand">
           </div>
         </div>
       </div>
@@ -25,7 +40,89 @@
 
 <script>
 export default {
-  name: 'PageIndex'
+  name: 'PageIndex',
+  data () {
+    return {
+      command: '',
+      player: {
+        name: 'Player',
+        score: 0,
+        direction: 'N'
+      },
+      floor: [],
+      listCommands: ['ten', 'get', 'left', 'right', 'go'],
+    }
+  },
+  computed: {
+    getDirection(){
+      if(this.player.direction == 'N'){
+        return 'triangulo-para-cima'
+      }else if(this.player.direction == 'E'){
+        return 'triangulo-para-direita'
+      }else if(this.player.direction == 'S'){
+        return 'triangulo-para-baixo'
+      }else if(this.player.direction == 'W'){
+        return 'triangulo-para-esquerda'
+      }
+    }
+  },
+  beforeMount () {
+    this.floor = this.createFloor()
+  },
+  methods: {
+    createFloor () {
+      let floor = [
+        [this.createBox(),this.createBox(),this.createBox()],
+        [this.createBox(true),this.createBox(),this.createBox()],
+        [this.createBox(),this.createBox(),this.createBox()]
+      ]
+      return floor
+    },
+    createBox(bool = false){
+
+      return {
+        here: bool,
+         // commands: ['ten', 'get', 'left', 'right', 'go'],
+        // navigation: true,
+        // itens: ['key', 'sword', 'shield', 'potion', 'food', 'gold'],
+        }
+    },
+    setCommand(key){
+      if(key.key != 'Enter'){
+        return
+      }
+      if(this.listCommands.includes(this.command)){
+        this[this.command]()
+      }
+
+      this.command = ''
+    },
+    left(){
+      if(this.player.direction == 'N'){
+        this.player.direction = 'W'
+      }else if(this.player.direction == 'W'){
+        this.player.direction = 'S'
+      }else if(this.player.direction == 'S'){
+        this.player.direction = 'E'
+      }else if(this.player.direction == 'E'){
+        this.player.direction = 'N'
+      }
+    },
+    right(){
+      if(this.player.direction == 'N'){
+        this.player.direction = 'E'
+      }else if(this.player.direction == 'E'){
+        this.player.direction = 'S'
+      }else if(this.player.direction == 'S'){
+        this.player.direction = 'W'
+      }else if(this.player.direction == 'W'){
+        this.player.direction = 'N'
+      }
+    },
+    go(){
+     
+    }
+  }
 }
 </script>
 
