@@ -10,8 +10,9 @@
           <div v-for="(row, index) in floor" :key="index">
             <div v-for="(col, i) in row" :key="i+'i'">
               <div class="floor" style="background-color: #ccc;">
-                <!-- {{col.here}} -->
-                <div v-if="col.here" class="player" :id="getDirection"></div>
+                <div class="floor d-flex justify-content-center align-items-center" style="background-color: #ccc">
+                  <div v-if="col.here" class="player" :id="getDirection"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -50,7 +51,7 @@ export default {
         direction: 'N'
       },
       floor: [],
-      listCommands: ['ten', 'get', 'left', 'right', 'go'],
+      listCommands: ['top', 'down', 'left', 'right', 'go', 'get', 'ten'],
     }
   },
   computed: {
@@ -68,12 +69,14 @@ export default {
   },
   beforeMount () {
     this.floor = this.createFloor()
+    this.floor[this.rand(3)][this.rand(3)].here = true
   },
   methods: {
     createFloor () {
+
       let floor = [
         [this.createBox(),this.createBox(),this.createBox()],
-        [this.createBox(true),this.createBox(),this.createBox()],
+        [this.createBox(),this.createBox(),this.createBox()],
         [this.createBox(),this.createBox(),this.createBox()]
       ]
       return floor
@@ -98,29 +101,22 @@ export default {
       this.command = ''
     },
     left(){
-      if(this.player.direction == 'N'){
-        this.player.direction = 'W'
-      }else if(this.player.direction == 'W'){
-        this.player.direction = 'S'
-      }else if(this.player.direction == 'S'){
-        this.player.direction = 'E'
-      }else if(this.player.direction == 'E'){
-        this.player.direction = 'N'
-      }
+      this.player.direction = 'W'
     },
     right(){
-      if(this.player.direction == 'N'){
-        this.player.direction = 'E'
-      }else if(this.player.direction == 'E'){
-        this.player.direction = 'S'
-      }else if(this.player.direction == 'S'){
-        this.player.direction = 'W'
-      }else if(this.player.direction == 'W'){
-        this.player.direction = 'N'
-      }
+      this.player.direction = 'E'
+    },
+    top(){
+      this.player.direction = 'N'
+    },
+    down(){
+      this.player.direction = 'S'
     },
     go(){
      
+    },
+    rand(max) {
+      return Math.floor(Math.random() * max);
     }
   }
 }
