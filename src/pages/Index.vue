@@ -31,7 +31,7 @@ export default {
 
 <style scoped>
   body{
-    padding: 30px; 
+    padding: 30px;
   }
 
   .generalFloor{
