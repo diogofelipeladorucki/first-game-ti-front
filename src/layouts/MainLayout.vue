@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout class="d-flex justify-content-center align-items-center" view="lHh Lpr lFf">
     <q-page-container>
       <router-view />
     </q-page-container>
